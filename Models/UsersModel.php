@@ -83,4 +83,20 @@
 
 		    return $res;
 		}
+
+		public function deleteUser($id)
+		{
+			$this->id = $id;
+			$select = "SELECT * FROM users WHERE id = $id";
+			$result = $this->select($select);
+
+			if ($result['status'] == 1) {
+				$sql = "UPDATE users SET status = 0 WHERE id = ?";
+			} else {
+		    	$sql = "UPDATE users SET status = 1 WHERE id = ?";
+			}
+		    $datas = array($this->id);
+		    $data = $this->save($sql, $datas);
+		    return $data;
+		}
 	}

@@ -4,6 +4,9 @@
 		public function __construct()
 		{
 		    session_start();
+		    if (empty($_SESSION['activo'])) {
+		    	header("location: ".BASE_URL);
+		    }
 		    parent::__construct();
 		}
 
@@ -24,8 +27,8 @@
 				}
 
 				$data[$i]['acciones'] = '<div>
-					<button class="btn btn-primary" type="button" onclick="btnEditUser('.$data[$i]['id'].');">Editar</button>
-					<button class="btn btn-danger" type="button">Eliminar</button>
+					<button class="btn btn-primary" type="button" onclick="btnEditUser('.$data[$i]['id'].');"><i class="fas fa-edit"></i></button>
+					<button class="btn btn-secondary" type="button" onclick="btnDeleteUser('.$data[$i]['id'].');">Estado</button>
 				</div>';
 			}
 			echo json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -79,12 +82,14 @@
 			} else {
 				$user = $_POST['user'];
 				$password = $_POST['password'];
-				$data = $this->model->getUser($user, $password);
+				$hash = hash("SHA256", $password);
+				$data = $this->model->getUser($user, $hash);
 
 				if ($data) {
 					$_SESSION['user_id'] = $data['id'];
 					$_SESSION['user'] = $data['user'];
 					$_SESSION['name'] = $data['name'];
+					$_SESSION['activo'] = true;
 					$msg = "ok";
 				} else {
 					$msg = "Usuario o contraseña invalidos";
@@ -99,5 +104,24 @@
 			$data = $this->model->editUser($id);
 			echo json_encode($data, JSON_UNESCAPED_UNICODE);
 			die();
+		}
+
+		public function delete($id)
+		{
+
+			$data = $this->model->deleteUser($id);
+			if ($data == 1) {
+				$msg = "ok";
+			} else {
+				$msg = "No se pudo modifical el estado del usuario";
+			}
+			echo json_encode($msg, JSON_UNESCAPED_UNICODE);
+			die();
+		}
+
+		public function logout()
+		{
+			session_destroy();
+			header("location: ".BASE_URL);
 		}
 	}

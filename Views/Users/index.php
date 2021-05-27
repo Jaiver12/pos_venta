@@ -6,7 +6,7 @@
     </ol>
 
     <button type="button" class="btn btn-success mb-4" onclick="modalShow();">
-	  Nuevo
+	  <i class="fas fa-plus"></i> Nuevo
 	</button>
 
 
