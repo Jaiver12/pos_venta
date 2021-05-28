@@ -29,5 +29,6 @@
         </script>
         <script src="<?=BASE_URL?>Assets/js/sweetalert2.all.min.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Funciones.js"></script>
+        <script src="<?=BASE_URL?>Assets/js/Clients.js"></script>
     </body>
 </html>
