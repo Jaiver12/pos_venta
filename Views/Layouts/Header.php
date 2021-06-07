@@ -55,6 +55,10 @@
                                 Cateorias
                             </a>
 
+                            <a class="nav-link" href="<?=BASE_URL?>Medidas">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Medidas
+                            </a>
 
                             <div class="sb-sidenav-menu-heading">Opciones</div>
 

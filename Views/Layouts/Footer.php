@@ -31,5 +31,6 @@
         <script src="<?=BASE_URL?>Assets/js/Funciones.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Clients.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Categories.js"></script>
+        <script src="<?=BASE_URL?>Assets/js/Medidas.js"></script>
     </body>
 </html>
