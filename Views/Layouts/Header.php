@@ -50,6 +50,11 @@
                                 Clientes
                             </a>
 
+                            <a class="nav-link" href="<?=BASE_URL?>Categories">
+                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                Cateorias
+                            </a>
+
 
                             <div class="sb-sidenav-menu-heading">Opciones</div>
 

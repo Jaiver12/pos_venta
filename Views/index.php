@@ -70,6 +70,6 @@
         <script>
             const base_url = "<?=BASE_URL?>";
         </script>
-        <script src="<?=BASE_URL?>Assets/js/Funciones.js"></script>
+        <script src="<?=BASE_URL?>Assets/js/Login.js"></script>
     </body>
 </html>

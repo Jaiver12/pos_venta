@@ -1,40 +1,33 @@
-let tblUser;
-var modalUser = new bootstrap.Modal(document.getElementById('modalUser'));
+let tblCategory;
+var modalCategories = new bootstrap.Modal(document.getElementById('modalCategories'));
 
 document.addEventListener("DOMContentLoaded", function() {
-	tblUser = $('#tblUsers').DataTable({
+	tblCategory = $('#tblCategories').DataTable({
 	    ajax: {
-	        url: base_url + "Users/listar",
+	        url: base_url + "Categories/listar",
 	        dataSrc: ''
 	    },
 	    columns: [
 	    	{'data' : 'id'},
-	    	{'data' : 'user'},
 	    	{'data' : 'name'},
-	    	{'data' : 'caja'},
 	    	{'data' : 'status'},
 	    	{'data' : 'acciones'}
 	    	]
 	});
 })
 
-const modalShow = () => {
-	document.getElementById('tituloModal').innerHTML = "Nuevo usuario";
-	document.getElementById("formUser").reset();
-	document.getElementById("passwords").classList.remove("d-none");
+const modalCategory = () => {
+	document.getElementById('tituloModalCategory').innerHTML = "Nueva Cateoria";
+	document.getElementById("formCategory").reset();
 	document.getElementById("id").value = "";
-	modalUser.show();
+	modalCategories.show()
 }
 
-function formUser(e) {
+function formCategories(e) {
 	e.preventDefault();
-	const user = document.getElementById("user");
 	const name = document.getElementById("name");
-	const password = document.getElementById("password");
-	const confirm = document.getElementById("confirm");
-	const caja = document.getElementById("caja");
 
-	if (user.value == "" || name.value == ""  || caja.value == "") {
+	if (name.value == "") {
 		Swal.fire({
 		  position: 'top-end',
 		  icon: 'error',
@@ -42,17 +35,9 @@ function formUser(e) {
 		  showConfirmButton: false,
 		  timer: 2000
 		})
-	} else if (password.value != confirm.value ) {
-		Swal.fire({
-		  position: 'top-end',
-		  icon: 'error',
-		  title: 'Las contraseñas con son iguales',
-		  showConfirmButton: false,
-		  timer: 2000
-		})
 	} else {
-		const url = base_url + "Users/register";
-		const form = document.getElementById("formUser");
+		const url = base_url + "Categories/register";
+		const form = document.getElementById("formCategory");
 		const http = new XMLHttpRequest();
 		http.open("POST", url, true);
 		http.send(new FormData(form));
@@ -63,24 +48,24 @@ function formUser(e) {
 					Swal.fire({
 					  position: 'top-end',
 					  icon: 'success',
-					  title: 'Usuario registrado con exito',
+					  title: 'Categoria registrado con exito',
 					  showConfirmButton: false,
 					  timer: 3000
 					})
 					form.reset();
-					modalUser.hide();
-					tblUser.ajax.reload();
-				} else if (res == 'modificado') {
+					modalCategories.hide();
+					tblCategory.ajax.reload();
+				} else if (res == "modificado") {
 					Swal.fire({
 					  position: 'top-end',
 					  icon: 'success',
-					  title: 'Usuario modificado con exito',
+					  title: 'Categoria modificado con exito',
 					  showConfirmButton: false,
 					  timer: 3000
 					})
 					form.reset();
-					modalUser.hide();
-					tblUser.ajax.reload();
+					modalCategories.hide();
+					tblCategory.ajax.reload();
 				} else {
 					Swal.fire({
 					  position: 'top-end',
@@ -95,10 +80,10 @@ function formUser(e) {
 	}
 }
 
-function btnEditUser(id) {
-	document.getElementById('tituloModal').innerHTML = "Actualizar usuario";
+const btnEditCategory = (id) => {
+	document.getElementById('tituloModalCategory').innerHTML = "Actualizar Cateoria";
 
-	const url = base_url + "Users/edit/" + id;
+	const url = base_url + "Categories/edit/" + id;
 	const http = new XMLHttpRequest();
 	http.open("GET", url, true);
 	http.send();
@@ -106,19 +91,16 @@ function btnEditUser(id) {
 		if (this.readyState == 4 && this.status == 200) {
 			const res = JSON.parse(this.responseText);
 			document.getElementById("id").value = res.id;
-			document.getElementById("user").value = res.user;
 			document.getElementById("name").value = res.name;
-			document.getElementById("caja").value = res.caja;
-			document.getElementById("passwords").classList.add("d-none");
-			modalUser.show();
+			modalCategories.show();
 		}
 	}
 }
 
-const btnDeleteUser = (id) => {
-	Swal.fire({
-	  title: 'Esta seguro de eliminar?',
-	  text: "El usuario no se elminara de forma permanente, solo cambiara el estado a inactivo!",
+const btnDeleteCategory = (id) => {
+Swal.fire({
+	  title: 'Esta seguro de modificar?',
+	  text: "La categoria no se elminara de forma permanente, solo cambiara el estado!",
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#3085d6',
@@ -127,7 +109,7 @@ const btnDeleteUser = (id) => {
 	  cancelButtonText: 'No'
 	}).then((result) => {
 	  if (result.isConfirmed) {
-		const url = base_url + "Users/delete/" + id;
+		const url = base_url + "Categories/delete/" + id;
 		const http = new XMLHttpRequest();
 		http.open("GET", url, true);
 		http.send();
@@ -137,10 +119,10 @@ const btnDeleteUser = (id) => {
 				if (res == "ok") {
 					Swal.fire(
 				      'Mensaje!',
-				      'El Usuario ya esta iniactivo.',
+				      'La Categoria ya esta iniactivo.',
 				      'success'
 				    )
-				    tblUser.ajax.reload();
+				    tblCategory.ajax.reload();
 				} else {
 					Swal.fire(
 				      'Mensaje!',
