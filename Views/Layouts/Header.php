@@ -70,7 +70,7 @@
                             <div class="collapse" id="collapseConfig" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
                                 <nav class="sb-sidenav-menu-nested nav">
                                     <a class="nav-link" href="<?=BASE_URL?>Users"><i class="fas fa-user mr-3"></i>  Usuarios</a>
-                                    <a class="nav-link" href="layout-sidenav-light.html">Cajas</a>
+                                    <a class="nav-link" href="<?=BASE_URL?>Cajas">Cajas</a>
                                 </nav>
                             </div>
 
