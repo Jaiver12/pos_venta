@@ -56,8 +56,13 @@
                             </a>
 
                             <a class="nav-link" href="<?=BASE_URL?>Medidas">
-                                <div class="sb-nav-link-icon"><i class="fas fa-users"></i></div>
+                                <div class="sb-nav-link-icon"><i class="fas fa-balance-scale-left"></i></div>
                                 Medidas
+                            </a>
+
+                            <a class="nav-link" href="<?=BASE_URL?>Products">
+                                <div class="sb-nav-link-icon"><i class="fab fa-product-hunt"></i></div>
+                                Productos
                             </a>
 
                             <div class="sb-sidenav-menu-heading">Opciones</div>

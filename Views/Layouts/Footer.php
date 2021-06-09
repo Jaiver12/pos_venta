@@ -33,5 +33,6 @@
         <script src="<?=BASE_URL?>Assets/js/Categories.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Medidas.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Cajas.js"></script>
+        <script src="<?=BASE_URL?>Assets/js/Products.js"></script>
     </body>
 </html>
