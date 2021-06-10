@@ -9,6 +9,7 @@ document.addEventListener("DOMContentLoaded", function() {
 	    },
 	    columns: [
 	    	{'data' : 'id'},
+	    	{'data' : 'image'},
 	    	{'data' : 'codigo'},
 	    	{'data' : 'name'},
 	    	{'data' : 'description'},
@@ -24,6 +25,8 @@ const modalProduct = () => {
 	document.getElementById('tituloModalProduct').innerHTML = "Nuevo producto";
 	document.getElementById("formProduct").reset();
 	document.getElementById("id").value = "";
+	document.getElementById("img").value = "";
+	document.getElementById("img-preview").src = "";
 	modalProducts.show()
 }
 
@@ -36,6 +39,7 @@ function formProducts(e) {
 	const price_vent = document.getElementById("price_vent");
 	const id_medida = document.getElementById("id_medida");
 	const id_category = document.getElementById("id_category");
+	const img = document.getElementById("img");
 
 	if (codigo.value == "" || name.value == "" || description.value == "" || price_comp.value == "" || price_vent.value == "") {
 		Swal.fire({
@@ -109,13 +113,14 @@ const btnEditProduct = (id) => {
 			document.getElementById("price_vent").value = res.price_vent;
 			document.getElementById("id_medida").value = res.id_medida;
 			document.getElementById("id_category").value = res.id_category;
+			document.getElementById("img-preview").src = base_url + 'Assets/image/' + res.img;
 			modalProducts.show();
 		}
 	}
 }
 
 const btnDeleteProduct = (id) => {
-Swal.fire({
+	Swal.fire({
 	  title: 'Esta seguro de modificar?',
 	  text: "El producto no se elminara de forma permanente, solo cambiara el estado!",
 	  icon: 'warning',
@@ -152,4 +157,10 @@ Swal.fire({
 		}
 	  }
 	})
+}
+
+const preview = (e) => {
+	const url = e.target.files[0];
+	const urlTmp = URL.createObjectURL(url);
+	document.getElementById("img-preview").src = urlTmp;
 }

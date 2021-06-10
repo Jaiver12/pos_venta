@@ -10,6 +10,7 @@
 		private $id_medida;
 		private $id_category;
 		private $status;
+		private $img;
 
 		public function __construct()
 		{
@@ -44,7 +45,7 @@
 		    return $data;
 		}
 
-		public function saveProduct($codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category)
+		public function saveProduct($codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category, $img)
 		{
 			$this->codigo = $codigo;
 			$this->name = $name;
@@ -53,9 +54,10 @@
 			$this->price_vent = $price_vent;
 			$this->id_medida = $id_medida;
 			$this->id_category = $id_category;
+			$this->img = $img;
 
-			$sql = "INSERT INTO products(codigo, name, description, price_comp, price_vent, id_medida, id_category) VALUES (?, ?, ?, ?, ?, ?, ?)";
-			$datas = array($this->codigo, $this->name, $this->description, $this->price_comp, $this->price_vent, $this->id_medida, $this->id_category);
+			$sql = "INSERT INTO products(codigo, name, description, price_comp, price_vent, id_medida, id_category, img) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+			$datas = array($this->codigo, $this->name, $this->description, $this->price_comp, $this->price_vent, $this->id_medida, $this->id_category, $this->img);
 			$data = $this->save($sql, $datas);
 			if($data == 1) {
 		    	$res = "ok";
@@ -73,7 +75,7 @@
 		    return $data;
 		}
 
-		public function updateProduct($id, $codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category)
+		public function updateProduct($id, $codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category,  $img)
 		{
 			$this->id = $id;
 			$this->codigo = $codigo;
@@ -83,9 +85,10 @@
 			$this->price_vent = $price_vent;
 			$this->id_medida = $id_medida;
 			$this->id_category = $id_category;
+			$this->img = $img;
 
-		    $sql = "UPDATE products SET codigo = ?, name = ?, description = ?, price_comp = ?, price_vent = ?, id_medida = ?, id_category = ? WHERE id = ?";
-		    $datas = array($this->codigo, $this->name, $this->description, $this->price_comp, $this->price_vent, $this->id_medida, $this->id_category, $this->id);
+		    $sql = "UPDATE products SET codigo = ?, name = ?, description = ?, price_comp = ?, price_vent = ?, id_medida = ?, id_category = ?, img = ? WHERE id = ?";
+		    $datas = array($this->codigo, $this->name, $this->description, $this->price_comp, $this->price_vent, $this->id_medida, $this->id_category, $this->img, $this->id);
 		    $data = $this->save($sql, $datas);
 		    if($data == 1) {
 		    	$res = "modificado";

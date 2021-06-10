@@ -23,6 +23,8 @@
 		{
 			$data = $this->model->getProductsAll();
 			for ($i=0; $i < count($data) ; $i++) {
+				$data[$i]['image'] = '<img class="img-thumbnail" src="'. BASE_URL . "Assets/image/" . $data[$i]['img'] .'" width="100">';
+
 				if($data[$i]['status'] == 1) {
 					$data[$i]['status'] = '<span class="badge bg-success">Activo</span>';
 				} else {
@@ -49,22 +51,46 @@
 		    $id_medida = $_POST['id_medida'];
 		    $id_category = $_POST['id_category'];
 
+		    $img = $_FILES['img'];
+		    $nameimg = $img['name'];
+		    $tmpimg = $img['tmp_name'];
+		    $fecha = date("YmdHis");
+
 		    if ($codigo == "" || $name == "" || $description == "" || $price_comp == "" || $price_vent == "")
 		    {
 		    	$msg = "Todos los campos son obligatorios";
 		    } else {
+		    	if (!empty($nameimg)) {
+		    		$imgName = $fecha . nameimg;
+		    		$destino = "Assets/image/" . $imgName;
+		    	} else {
+		    		$imgName = "default.jpg";
+		    	}
+
 		    	if ($id == "") {
-			    	$data = $this->model->saveProduct($codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category);
+			    	$data = $this->model->saveProduct($codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category, $imgName);
 
 			    	if ($data == "ok") {
 			    		$msg = "si";
+			    		if (!empty($nameimg)) {
+			    			move_uploaded_file($tmpimg, $destino);
+			    		}
 			    	} else {
 			    		$msg = "No se puedo registrar la categoria";
 			    	}
 		    	} else {
-		    		$data = $this->model->updateProduct($id, $codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category);
+		    		$imgDelete = $this->model->editProduct($id);
+		    		if ($imgDelete['img'] != 'default.jpg' || $imgDelete['img'] != '') {
+		    			if (file_exists("Assets/image/" . $imgDelete['img'])) {
+		    				unlink("Assets/image/" . $imgDelete['img']);
+		    			}
+		    		}
+		    		$data = $this->model->updateProduct($id, $codigo, $name, $description, $price_comp, $price_vent, $id_medida, $id_category, $imgName);
 		    		if ($data == "modificado") {
 		    			$msg = "modificado";
+		    			if (!empty($nameimg)) {
+			    			move_uploaded_file($tmpimg, $destino);
+			    		}
 		    		} else {
 		    			$msg = "No se puedo actualizar la categoria";
 		    		}

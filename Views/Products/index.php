@@ -14,6 +14,7 @@
     	<thead class="table-dark">
     		<tr>
           <th>#</th>
+          <th>Imagen</th>
     			<th>Codigo</th>
           <th>Nombre</th>
           <th>Descripcion</th>
@@ -80,6 +81,19 @@
                 </select>
                 <label for="category">Categorias</label>
             </div>
+
+            <div class="form-floating mb-3">
+                <label class="form-label">Elige la foto</label>
+                <div class="card">
+                  <div class="card-body">
+                    <label for="img" class="btn btn-primary"><i class="fas fa-image"></i></label>
+                    <input class="d-none" type="file" id="img" name="img" onchange="preview(event)">
+                    <img id="img-preview" class="img-thumbnail">
+                  </div>
+                </div>
+
+            </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
