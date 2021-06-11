@@ -65,6 +65,11 @@
                                 Productos
                             </a>
 
+                            <a class="nav-link" href="<?=BASE_URL?>Purchases">
+                                <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                                Compras
+                            </a>
+
                             <div class="sb-sidenav-menu-heading">Opciones</div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConfig" aria-expanded="false" aria-controls="collapseConfig">
