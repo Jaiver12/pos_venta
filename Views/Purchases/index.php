@@ -46,27 +46,22 @@
             </div>
           </div>
 
-          <div class="col-md-2 mt-2">
-            <button class="btn btn-primary" type="button">Agregar</button>
-          </div>
-
         </div>
       </form>
     </div>
   </div>
 
-<table class="table table-light" id="tblPurchase">
+<table class="table table-light table-bordered table-hover" id="tblPurchase">
       <thead class="table-dark">
         <tr>
           <th>#</th>
-          <th>Codigo</th>
           <th>Nombre</th>
           <th>Cantidad</th>
           <th>Precio</th>
           <th>Sub-Total</th>
           <th></th>
         </tr>
-        <tbody>
+        <tbody id="tblDetails">
         </tbody>
       </thead>
     </table>

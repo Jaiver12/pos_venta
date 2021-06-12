@@ -28,4 +28,48 @@ const subTotal = (e) => {
 	const stock = document.getElementById("stock").value;
 	const price_comp = document.getElementById("price_comp").value;
 	document.getElementById("sub_total").value = price_comp * stock;
+
+	if (e.which == 13) {
+		const url = base_url + "Purchases/addPurchase";
+		const frm = document.getElementById("frmPurchase");
+		const http = new XMLHttpRequest();
+		http.open("POST", url, true);
+		http.send(new FormData(frm));
+		http.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				const res = JSON.parse(this.responseText);
+				if(res == "ok") {
+					frm.reset();
+					addDetails();
+				}
+			}
+		}
+	}
+}
+addDetails();
+
+function addDetails() {
+	const url = base_url + "Purchases/addDetails";
+	const http = new XMLHttpRequest();
+	http.open("GET", url, true);
+	http.send();
+	http.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			const res = JSON.parse(this.responseText);
+			let html = '';
+			res.forEach(row => {
+				html += `<tr>
+					<td>${row['id']}</td>
+					<td>${row['name']}</td>
+					<td>${row['stock']}</td>
+					<td>${row['price']}</td>
+					<td>${row['sub_total']}</td>
+					<td>
+						<button class="btn btn-ms btn-danger">X</button>
+					</td>
+				</tr>`;
+			});
+			document.getElementById("tblDetails").innerHTML = html;
+		}
+	}
 }
