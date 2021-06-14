@@ -57,19 +57,53 @@ function addDetails() {
 		if (this.readyState == 4 && this.status == 200) {
 			const res = JSON.parse(this.responseText);
 			let html = '';
-			res.forEach(row => {
+			res['detail'].forEach(row => {
 				html += `<tr>
-					<td>${row['id']}</td>
-					<td>${row['name']}</td>
-					<td>${row['stock']}</td>
-					<td>${row['price']}</td>
-					<td>${row['sub_total']}</td>
+					<td>${row.id_pro}</td>
+					<td>${row.name}</td>
+					<td>${row.stock}</td>
+					<td>${row.price}</td>
+					<td>${row.sub_total}</td>
 					<td>
-						<button class="btn btn-ms btn-danger">X</button>
+						<button class="btn btn-ms btn-danger" onclick="deleteDetail(${row.id})">
+							<i class="fas fa-trash-alt"></i>
+						</button>
 					</td>
 				</tr>`;
 			});
+
 			document.getElementById("tblDetails").innerHTML = html;
+			document.getElementById("total").value = res['total'].total;
+		}
+	}
+}
+
+const deleteDetail = (id) => {
+	const url = base_url + "Purchases/deleteDetails/" + id;
+	const http = new XMLHttpRequest();
+	http.open("GET", url, true);
+	http.send();
+	http.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			const res = JSON.parse(this.responseText);
+			if (res == "ok") {
+				Swal.fire({
+				  position: 'top-end',
+				  icon: 'success',
+				  title: 'Producto eliminado con exito',
+				  showConfirmButton: false,
+				  timer: 3000
+				})
+				addDetails();
+			} else {
+				Swal.fire({
+				  position: 'top-end',
+				  icon: 'error',
+				  title: 'Error al eliminar el producto',
+				  showConfirmButton: false,
+				  timer: 2500
+				})
+			}
 		}
 	}
 }

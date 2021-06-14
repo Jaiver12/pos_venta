@@ -45,8 +45,21 @@
 		public function addDetails()
 		{
 			$id = $_SESSION['user_id'];
-		    $data = $this->model->getDetails($id);
+		    $data['detail'] = $this->model->getDetails($id);
+		    $data['total'] = $this->model->totalCompra($id);
 		    echo json_encode($data, JSON_UNESCAPED_UNICODE);
+		}
+
+		public function deleteDetails($id)
+		{
+		    $data = $this->model->deleteDetail($id);
+		    if ($data == "ok") {
+		    	$msg = "ok";
+		    } else {
+		    	$msg = "Error al eliminar el priducto";
+		    }
+		    echo json_encode($msg);
+		    die();
 		}
 
 	}

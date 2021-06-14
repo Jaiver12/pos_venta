@@ -1,7 +1,7 @@
 <?php
 	class PurchasesModel extends Query
 	{
-		private $id_user, $id_product, $price, $stock, $sub_total;
+		private $id_user, $id_product, $price, $stock, $sub_total, $id;
 
 		public function __construct()
 		{
@@ -45,9 +45,31 @@
 
 		public function getDetails($id)
 		{
-		    $sql ="SELECT d.*, p.id, p.name FROM detaill d INNER JOIN products p ON d.id_product = p.id WHERE d.id_user = $id";
+		    $sql ="SELECT d.*, p.id AS id_pro, p.name FROM detaill d INNER JOIN products p ON d.id_product = p.id WHERE d.id_user = $id";
 		    $data = $this->selectAll($sql);
 		    return $data;
+		}
+
+		public function totalCompra($id)
+		{
+		    $sql ="SELECT SUM(sub_total) AS total FROM detaill WHERE id_user = $id";
+		    $data = $this->select($sql);
+		    return $data;
+		}
+
+		public function deleteDetail($id)
+		{
+			$this->id = $id;
+		    $sql = "DELETE FROM detaill WHERE id = ?";
+		    $datas = array($this->id);
+		    $data = $this->delete($sql, $datas);
+		    if ($data == 1) {
+				$res = "ok";
+			} else {
+				$res = "error";
+			}
+
+			return $res;
 		}
 
 	}

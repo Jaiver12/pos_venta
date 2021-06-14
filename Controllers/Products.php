@@ -80,7 +80,7 @@
 			    	}
 		    	} else {
 		    		$imgDelete = $this->model->editProduct($id);
-		    		if ($imgDelete['img'] != 'default.jpg' || $imgDelete['img'] != '') {
+		    		if ($imgDelete['img'] != 'default.jpg') {
 		    			if (file_exists("Assets/image/" . $imgDelete['img'])) {
 		    				unlink("Assets/image/" . $imgDelete['img']);
 		    			}

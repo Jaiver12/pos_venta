@@ -43,4 +43,18 @@
 			return $res;
 		}
 
+		public function delete($sql, $datas)
+		{
+		    $this->sql = $sql;
+			$this->datas = $datas;
+			$del = $this->con->prepare($this->sql);
+			$data = $del->execute($this->datas);
+			if($data) {
+				$res = 1;
+			} else {
+				$res = 0;
+			}
+			return $res;
+		}
+
 	}

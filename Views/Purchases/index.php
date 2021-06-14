@@ -1,11 +1,12 @@
 <?php include "Views/Layouts/Header.php"; ?>
-
-	<h1 class="mt-4">Compra</h1>
     <ol class="breadcrumb mb-4">
         <li class="breadcrumb-item active"></li>
     </ol>
 
   <div class="card mb-4">
+    <div class="card-header bg-primary text-white">
+        <h4>Nueva compra</h4>
+    </div>
     <div class="card-body">
       <form id="frmPurchase">
         <div class="row">
