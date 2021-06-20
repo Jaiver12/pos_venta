@@ -78,7 +78,7 @@
           </div>
 
           <div class="col-md-12 ml-auto">
-            <button class="btn btn-primary" type="button">Generar compra</button>
+            <button class="btn btn-primary" type="button" onclick="GenerarCompra()">Generar compra</button>
           </div>
         </div>
         </div>

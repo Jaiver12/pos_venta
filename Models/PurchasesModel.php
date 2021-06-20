@@ -72,4 +72,60 @@
 			return $res;
 		}
 
+		public function consultDetail($id_product, $id_user)
+		{
+			$sql ="SELECT * FROM detaill WHERE id_product = $id_product AND id_user = $id_user";
+		    $data = $this->select($sql);
+		    return $data;
+		}
+
+		public function updateDetail($price, $stock, $sub_total, $id_product, $id_user)
+		{
+			$sql = "UPDATE detaill SET price = ?, stock = ?, sub_total = ? WHERE id_product = ? AND  id_user = ?";
+			$datas = array($price, $stock, $sub_total, $id_product, $id_user);
+			$data = $this->save($sql, $datas);
+			if ($data == 1) {
+				$res = "modificado";
+			} else {
+				$res = "error";
+			}
+
+			return $res;
+		}
+
+		public function register($total)
+		{
+		    $sql = "INSERT INTO purchase (total) VALUES (?)";
+			$datas = array($total);
+			$data = $this->save($sql, $datas);
+			if ($data == 1) {
+				$res = "ok";
+			} else {
+				$res = "error";
+			}
+
+			return $res;
+		}
+
+		public function id_purchase()
+		{
+		    $sql = "SELECT MAX(id) AS id FROM purchase";
+		    $data = $this->select($sql);
+		    return $data;
+		}
+
+		public function registraDetail($id_purchase, $id_product, $stock, $price, $sub_total)
+		{
+			$sql = "INSERT INTO detail_purchase (id_purchase, id_product, stock, price, sub_total) VALUES (?, ?, ?, ?, ?)";
+			$datas = array($id_purchase, $id_product, $stock, $price, $sub_total);
+			$data = $this->save($sql, $datas);
+			if ($data == 1) {
+				$res = "ok";
+			} else {
+				$res = "error";
+			}
+
+			return $res;
+		}
+
 	}
