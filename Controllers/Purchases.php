@@ -90,13 +90,94 @@
 					$price = $detail['price'];
 					$sub_total = $price * $stock;
 					$this->model->registraDetail($id_purchase['id'], $id_product, $stock, $price, $sub_total);
+					$stockActual = $this->model->getProduct($id_product);
+					$stockActualizado = $stockActual['stock'] + $stock;
+					$this->model->updateStock($id_product, $stockActualizado);
 				}
-				$msg = "ok";
+				$vaciar = $this->model->vaciarDetalle($id);
+				if ($vaciar == "ok") {
+					$msg = array('msg' => 'ok', 'id_compra' => $id_purchase['id']);
+				}
 			} else {
 				$msg = "error al hacer la compra";
 			}
 
 			echo json_encode($msg);
+			die();
+		}
+
+		public function generarPdf($id_purchase)
+		{
+			$empresa = $this->model->getEmpresa();
+			$productos = $this->model->getProPurchase($id_purchase);
+
+			require('libraris/fpdf/fpdf.php');
+
+			$pdf = new FPDF('P','mm',array(80, 200));
+			$pdf->AddPage();
+			$pdf->SetMargins(5,0,0);
+			$pdf->SetTitle('Reporte de Compra');
+			$pdf->SetFont('Arial','B',14);
+			$pdf->Cell(65,10, utf8_decode($empresa['name']), 0, 1, 'C');
+			$pdf->SetFont('Arial','B',9);
+			$pdf->Cell(18,5, 'rut :', 0, 0, 'L');
+			$pdf->SetFont('Arial','',9);
+			$pdf->Cell(20,5, $empresa['rif'], 0, 1, 'L');
+
+			$pdf->SetFont('Arial','B',9);
+			$pdf->Cell(18,5, 'Telefono :', 0, 0, 'L');
+			$pdf->SetFont('Arial','',9);
+			$pdf->Cell(20,5, $empresa['phone'], 0, 1, 'L');
+
+			$pdf->SetFont('Arial','B',9);
+			$pdf->Cell(18,5, 'Direccion :', 0, 0, 'L');
+			$pdf->SetFont('Arial','',9);
+			$pdf->Cell(20,5, $empresa['addres'], 0, 1, 'L');
+
+			$pdf->SetFont('Arial','B',9);
+			$pdf->Cell(18,5, 'Folio :', 0, 0, 'L');
+			$pdf->SetFont('Arial','',9);
+			$pdf->Cell(20,5, $id_purchase, 0, 1, 'L');
+			$pdf->Ln();
+
+			// Encabesado
+			$pdf->SetFillColor(0,0,0);
+			$pdf->SetTextColor(255,255,255);
+			$pdf->Cell(10,5,'Cant',0,0,'L', true);
+			$pdf->Cell(35,5,utf8_decode('Descripción'),0,0,'L', true);
+			$pdf->Cell(10,5,'Precio',0,0,'L', true);
+			$pdf->Cell(15,5,'SUb-Total',0,1,'L', true);
+
+			$pdf->SetTextColor(0,0,0);
+			$total = 0.00;
+			foreach ($productos as $pro) {
+				$total = $total + $pro['sub_total'];
+				$pdf->Cell(10,5,$pro['stock'],0,0,'L');
+				$pdf->Cell(35,5,utf8_decode($pro['name']),0,0,'L');
+				$pdf->Cell(10,5,$pro['price'],0,0,'L');
+				$pdf->Cell(15,5,number_format($pro['sub_total'], 2, '.', ','),0,1,'L');
+			}
+			$pdf->Ln();
+			$pdf->Cell(70,5,'Total a Pagar',0,1,'R');
+			$pdf->Cell(70,5,number_format($total, 2, '.', ','),0,1,'R');
+
+			$pdf->Output();
+		}
+
+		public function historial()
+		{
+			$this->views->getView($this, "historial");
+		}
+
+		public function listar()
+		{
+			$data = $this->model->historialCompra();
+			for ($i=0; $i < count($data) ; $i++) {
+				$data[$i]['acciones'] = '<div>
+					<a class="btn btn-danger" href="'.BASE_URL . "Purchases/generarPdf/" . $data[$i]['id'] .'" target="_blank"><i class="fas fa-file-pdf"></i></a>
+				</div>';
+			}
+			echo json_encode($data, JSON_UNESCAPED_UNICODE);
 			die();
 		}
 

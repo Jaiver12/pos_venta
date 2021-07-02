@@ -17,12 +17,8 @@
         </div>
         <script src="<?=BASE_URL?>Assets/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
         <script src="<?=BASE_URL?>Assets/js/jquery.min.js"></script>
-        <script src="<?=BASE_URL?>Assets/js/datatables.min.js"></script>
+        <script src="<?=BASE_URL?>Assets/DataTables/datatables.min.js"></script>
         <script src="<?=BASE_URL?>Assets/js/scripts.js"></script>
-       <!-- <script src="<?=BASE_URL?>Assets/js/Chart.min.js" crossorigin="anonymous"></script>
-        <script src="<?=BASE_URL?>Assets/demo/chart-area-demo.js"></script>
-        <script src="<?=BASE_URL?>Assets/demo/chart-bar-demo.js"></script>
-        <script src="<?=BASE_URL?>Assets/js/simple-datatables@latest" crossorigin="anonymous"></script> -->
         <script src="<?=BASE_URL?>Assets/js/datatables-simple-demo.js"></script>
         <script>
             const base_url = "<?=BASE_URL?>";

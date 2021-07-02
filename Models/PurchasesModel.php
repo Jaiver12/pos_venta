@@ -128,4 +128,47 @@
 			return $res;
 		}
 
+		public function getEmpresa()
+		{
+			$sql = "SELECT * FROM config";
+		    $data = $this->select($sql);
+		    return $data;
+		}
+
+		public function vaciarDetalle($id_user)
+		{
+			$sql = "DELETE FROM detaill WHERE id_user = ?";
+			$datas = array($id_user);
+			$data = $this->save($sql, $datas);
+			if ($data == 1) {
+				$res = "ok";
+			} else {
+				$res = "error";
+			}
+
+			return $res;
+		}
+
+		public function getProPurchase($id_purchase)
+		{
+			$sql = "SELECT c.*, d.*, p.id, p.name FROM purchase c INNER JOIN detail_purchase d ON c.id = d.id_purchase INNER JOIN products p ON p.id = d.id_product WHERE c.id = $id_purchase";
+			$data = $this->selectAll($sql);
+			return $data;
+		}
+
+		public function historialCompra()
+		{
+		    $sql = "SELECT * FROM purchase";
+		    $data = $this->selectAll($sql);
+		    return $data;
+		}
+
+		public function updateStock($id_product, $stock)
+		{
+			$sql = "UPDATE products SET stock = ? WHERE id = ?";
+			$datas = array($stock, $id_product);
+			$data = $this->save($sql, $datas);
+			return $data;
+		}
+
 	}

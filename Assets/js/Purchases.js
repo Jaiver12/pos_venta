@@ -1,3 +1,18 @@
+document.addEventListener("DOMContentLoaded", function() {
+	$('#tblHistorialCompras').DataTable({
+	    ajax: {
+	        url: base_url + "Purchases/listar",
+	        dataSrc: ''
+	    },
+	    columns: [
+	    	{'data' : 'id'},
+	    	{'data' : 'total'},
+	    	{'data' : 'fecha'},
+	    	{'data' : 'acciones'}
+	    	]
+	});
+})
+
 const searchCodigo = (e) => {
 	e.preventDefault();
 
@@ -129,14 +144,18 @@ Swal.fire({
 		http.send();
 		http.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
-				console.log(this.responseText);
 				const res = JSON.parse(this.responseText);
-				if (res == "ok") {
+				if (res.msg == "ok") {
 					Swal.fire(
 				      'Mensaje!',
 				      'Compra realizada con exito.',
 				      'success'
 				    )
+				    const ruta = base_url + "Purchases/generarPdf/" + res.id_compra;
+				    window.open(ruta);
+				    setTimeout(() => {
+				    	window.location.reload();
+					}, 300);
 				} else {
 					Swal.fire(
 				      'Mensaje!',

@@ -8,7 +8,7 @@
         <meta name="author" content="" />
         <title>Panel Administrador</title>
         <link href="<?=BASE_URL?>Assets/css/datatable-style.css" rel="stylesheet" />
-        <link href="<?=BASE_URL?>Assets/css/datatables.min.css" rel="stylesheet" />
+        <link href="<?=BASE_URL?>Assets/DataTables/datatables.min.css" rel="stylesheet" />
         <link href="<?=BASE_URL?>Assets/css/styles.css" rel="stylesheet" />
         <script src="<?=BASE_URL?>Assets/js/all.min.js" crossorigin="anonymous"></script>
     </head>
@@ -65,10 +65,18 @@
                                 Productos
                             </a>
 
-                            <a class="nav-link" href="<?=BASE_URL?>Purchases">
+
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseEntrada" aria-expanded="false" aria-controls="collapseEntrada">
                                 <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
-                                Compras
+                                Entradas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
                             </a>
+                            <div class="collapse" id="collapseEntrada" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?=BASE_URL?>Purchases"><i class="fas fa-shopping-cart mr-3"></i>  Nueva compras</a>
+                                    <a class="nav-link" href="<?=BASE_URL?>Purchases/historial"><i class="fas fa-list mr-3"></i>historial</a>
+                                </nav>
+                            </div>
 
                             <div class="sb-sidenav-menu-heading">Opciones</div>
 
