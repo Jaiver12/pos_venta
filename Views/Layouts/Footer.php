@@ -31,6 +31,7 @@
         <script src="<?=BASE_URL?>Assets/js/Cajas.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Products.js"></script>
         <script src="<?=BASE_URL?>Assets/js/Purchases.js"></script>
+        <script src="<?=BASE_URL?>Assets/js/Sales.js"></script>
 
     </body>
 </html>

@@ -78,6 +78,18 @@
                                 </nav>
                             </div>
 
+                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSalida" aria-expanded="false" aria-controls="collapseSalida">
+                                <div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+                                Salidas
+                                <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                            </a>
+                            <div class="collapse" id="collapseSalida" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                                <nav class="sb-sidenav-menu-nested nav">
+                                    <a class="nav-link" href="<?=BASE_URL?>Sales"><i class="fas fa-shopping-cart mr-3"></i>  Nueva venta</a>
+                                    <a class="nav-link" href="<?=BASE_URL?>Sales/historial"><i class="fas fa-list mr-3"></i>historial</a>
+                                </nav>
+                            </div>
+
                             <div class="sb-sidenav-menu-heading">Opciones</div>
 
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseConfig" aria-expanded="false" aria-controls="collapseConfig">

@@ -1,16 +1,13 @@
-let tblCategory;
-var modalCategories = new bootstrap.Modal(document.getElementById('modalCategories'));
-
 document.addEventListener("DOMContentLoaded", function() {
-	tblCategory = $('#tblCategories').DataTable({
+	$('#tblHistorialVenta').DataTable({
 	    ajax: {
-	        url: base_url + "Categories/listar",
+	        url: base_url + "Sales/listar",
 	        dataSrc: ''
 	    },
 	    columns: [
 	    	{'data' : 'id'},
-	    	{'data' : 'name'},
-	    	{'data' : 'status'},
+	    	{'data' : 'total'},
+	    	{'data' : 'fecha'},
 	    	{'data' : 'acciones'}
 	    	],
 	    	language: {
@@ -72,94 +69,127 @@ document.addEventListener("DOMContentLoaded", function() {
                 postfixButtons: ['colvisRestore']
             }
         ]
+
 	});
 })
 
-const modalCategory = () => {
-	document.getElementById('tituloModalCategory').innerHTML = "Nueva Cateoria";
-	document.getElementById("formCategory").reset();
-	document.getElementById("id").value = "";
-	modalCategories.show()
-}
-
-function formCategories(e) {
+const searchCodigos = (e) => {
 	e.preventDefault();
-	const name = document.getElementById("name");
 
-	if (name.value == "") {
-		Swal.fire({
-		  position: 'top-end',
-		  icon: 'error',
-		  title: 'Todos los campos son requeridos',
-		  showConfirmButton: false,
-		  timer: 2000
-		})
-	} else {
-		const url = base_url + "Categories/register";
-		const form = document.getElementById("formCategory");
+	if (e.which == 13) {
+		const cod = document.getElementById("codigo").value;
+		const url = base_url + "Sales/searchCodigo/" + cod;
 		const http = new XMLHttpRequest();
-		http.open("POST", url, true);
-		http.send(new FormData(form));
-		http.onreadystatechange = function() {
+		http.open("GET", url, true);
+		http.send();
+		http.onreadystatechange = function () {
 			if (this.readyState == 4 && this.status == 200) {
 				const res = JSON.parse(this.responseText);
-				if (res == "si") {
-					Swal.fire({
-					  position: 'top-end',
-					  icon: 'success',
-					  title: 'Categoria registrado con exito',
-					  showConfirmButton: false,
-					  timer: 3000
-					})
-					form.reset();
-					modalCategories.hide();
-					tblCategory.ajax.reload();
-				} else if (res == "modificado") {
-					Swal.fire({
-					  position: 'top-end',
-					  icon: 'success',
-					  title: 'Categoria modificado con exito',
-					  showConfirmButton: false,
-					  timer: 3000
-					})
-					form.reset();
-					modalCategories.hide();
-					tblCategory.ajax.reload();
+				if (res) {
+					document.getElementById("id").value = res.id;
+					document.getElementById("name").value = res.name;
+					document.getElementById("price_comp").value = res.price_comp;
+					document.getElementById("stock").focus();
 				} else {
-					Swal.fire({
-					  position: 'top-end',
-					  icon: 'error',
-					  title: res,
-					  showConfirmButton: false,
-					  timer: 2000
-					})
+					alert("Producto no existe");
 				}
 			}
 		}
 	}
 }
 
-const btnEditCategory = (id) => {
-	document.getElementById('tituloModalCategory').innerHTML = "Actualizar Cateoria";
+const subTotalVenta = (e) => {
+	e.preventDefault();
+	const stock = document.getElementById("stock").value;
+	const price_comp = document.getElementById("price_comp").value;
+	document.getElementById("sub_total").value = price_comp * stock;
 
-	const url = base_url + "Categories/edit/" + id;
+	if (e.which == 13) {
+		const url = base_url + "Purchases/addPurchase";
+		const frm = document.getElementById("frmPurchase");
+		const http = new XMLHttpRequest();
+		http.open("POST", url, true);
+		http.send(new FormData(frm));
+		http.onreadystatechange = function () {
+			if (this.readyState == 4 && this.status == 200) {
+				const res = JSON.parse(this.responseText);
+				if(res == "ok") {
+					frm.reset();
+					addDetails();
+				} else if(res == "modificado") {
+					frm.reset();
+					addDetails();
+				}
+			}
+		}
+	}
+}
+addDetails();
+
+function addDetails() {
+	const url = base_url + "Purchases/addDetails";
 	const http = new XMLHttpRequest();
 	http.open("GET", url, true);
 	http.send();
-	http.onreadystatechange = function() {
+	http.onreadystatechange = function () {
 		if (this.readyState == 4 && this.status == 200) {
 			const res = JSON.parse(this.responseText);
-			document.getElementById("id").value = res.id;
-			document.getElementById("name").value = res.name;
-			modalCategories.show();
+			let html = '';
+			res['detail'].forEach(row => {
+				html += `<tr>
+					<td>${row.id_pro}</td>
+					<td>${row.name}</td>
+					<td>${row.stock}</td>
+					<td>${row.price}</td>
+					<td>${row.sub_total}</td>
+					<td>
+						<button class="btn btn-ms btn-danger" onclick="deleteDetailVenta(${row.id})">
+							<i class="fas fa-trash-alt"></i>
+						</button>
+					</td>
+				</tr>`;
+			});
+
+			document.getElementById("tblDetailsVenta").innerHTML = html;
+			document.getElementById("totalVenta").value = res['total'].total;
 		}
 	}
 }
 
-const btnDeleteCategory = (id) => {
+const deleteDetailVenta = (id) => {
+	const url = base_url + "Sales/deleteDetails/" + id;
+	const http = new XMLHttpRequest();
+	http.open("GET", url, true);
+	http.send();
+	http.onreadystatechange = function () {
+		if (this.readyState == 4 && this.status == 200) {
+			const res = JSON.parse(this.responseText);
+			if (res == "ok") {
+				Swal.fire({
+				  position: 'top-end',
+				  icon: 'success',
+				  title: 'Producto eliminado con exito',
+				  showConfirmButton: false,
+				  timer: 2000
+				})
+				addDetails();
+			} else {
+				Swal.fire({
+				  position: 'top-end',
+				  icon: 'error',
+				  title: 'Error al eliminar el producto',
+				  showConfirmButton: false,
+				  timer: 2000
+				})
+			}
+		}
+	}
+}
+
+const GenerarVenta = () => {
 Swal.fire({
-	  title: 'Esta seguro de modificar?',
-	  text: "La categoria no se elminara de forma permanente, solo cambiara el estado!",
+	  title: 'Esta seguro de Generar la Venta?',
+	  text: "La Venta sera guardada!",
 	  icon: 'warning',
 	  showCancelButton: true,
 	  confirmButtonColor: '#3085d6',
@@ -168,20 +198,24 @@ Swal.fire({
 	  cancelButtonText: 'No'
 	}).then((result) => {
 	  if (result.isConfirmed) {
-		const url = base_url + "Categories/delete/" + id;
+		const url = base_url + "Sales/register";
 		const http = new XMLHttpRequest();
 		http.open("GET", url, true);
 		http.send();
 		http.onreadystatechange = function() {
 			if (this.readyState == 4 && this.status == 200) {
 				const res = JSON.parse(this.responseText);
-				if (res == "ok") {
+				if (res.msg == "ok") {
 					Swal.fire(
 				      'Mensaje!',
-				      'La Categoria ya esta iniactivo.',
+				      'Venta realizada con exito.',
 				      'success'
 				    )
-				    tblCategory.ajax.reload();
+				    const ruta = base_url + "Sales/generarPdf/" + res.id_venta;
+				    window.open(ruta);
+				    setTimeout(() => {
+				    	window.location.reload();
+					}, 300);
 				} else {
 					Swal.fire(
 				      'Mensaje!',
